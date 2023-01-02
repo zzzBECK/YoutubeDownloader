@@ -1,3 +1,3 @@
-## Simple Youtube Downloader, with manual link input
+## Simple Youtube Downloader
 
 "pip install pytube" to download dependency

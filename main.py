@@ -1,17 +1,34 @@
-from pytube import YouTube
+import pytube
 
-def download(link):
-    youtubeObject = YouTube(link)
-    youtubeObject = youtubeObject.streams.get_highest_resolution()
+class Video(object):
 
-    try:
+    def __init__(self, link: str):
+        self.youtubeVideo = pytube.YouTube(link)
+        self.youtubeVideo = self.youtubeVideo.streams.get_highest_resolution()
+       
+    def downloadVideo(self):
         print("Starting download...")
-        youtubeObject.download()
+        self.youtubeVideo.download()
         print("Download complete!")
-    except:
-        print("An error has ocurred")
 
+    def main(self):
+        try:
+            link = input("Youtube URL: ")
+            video = Video(link)
 
-link = "https://www.youtube.com/watch?v=cp4kWvgrNUQ"
+            video.downloadVideo()
 
-download(link)
+        except pytube.exceptions.RegexMatchError:
+            print(f'The Regex pattern did not return any matches for the video: {link}')
+
+        except pytube.exceptions.ExtractError:
+            print (f'An extraction error occurred for the video: {link}')
+
+        except pytube.exceptions.VideoUnavailable:
+            print(f'The following video is unavailable: {link}')
+
+        except:
+            print("An unexpected error has ocurred")
+
+if __name__ == "__main__":
+    Video.main(Video)
